@@ -1,0 +1,47 @@
+- name: Run whole application 
+  hosts: all
+  connection: local
+  become: true
+
+  vars:
+    deployment_path: "/home/ubuntu/app"
+    compose_path: "./docker-compose.yml"
+  roles:
+    - geerlingguy.docker
+  tasks:
+    - name: update apt
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+        cache_valid_time: 3600
+    - name: add python3-pip
+      package:
+        name: python3-pip
+        state: present
+
+    - name: Install docker,reuqests, docker-compose python package
+      pip:
+        name: 
+        - docker<7.0
+        - requests==2.31.0
+        - docker-compose
+    - name: create directory 
+      file:
+        path: "{{ deployment_path }}"
+        state: directory
+        mode: '0755'
+ 
+    - name: copy docker-compose.yml 
+      copy:
+        src: "{{ compose_path }}"
+        dest: "{{ deployment_path }}"
+ 
+    - name: Run `docker-compose up`
+      become: true
+      docker_compose:
+        project_src: "{{ deployment_path }}"
+        build: yes
+        debug: yes
+      environment:
+        FRONTEND_IMAGE: "{{ lookup('env','FRONTEND_IMAGE') }}"
+        BACKEND_IMAGE:  "{{ lookup('env','BACKEND_IMAGE') }}"
