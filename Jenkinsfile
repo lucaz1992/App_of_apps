@@ -30,5 +30,29 @@ pipeline {
                 sh "docker rm -f panda-front panda-back"
             }
         }
+
+        stage('Deploy app'){
+            steps {
+                script {
+                    withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag",
+                    "BACKEND_IMAGE=$backendImage:$backendDockerTag"]) {
+                        sh "docker compose up -d"
+                    }
+                }
+            }
+        }
+        stage('Tests'){
+            steps {
+                sh "pip3 install -r test/selenium/requirements.txt"
+                sh "python3 -m pytest test/selenium/frontendTest.py"
+            }
+        }
+    }
+
+    post {
+        always {
+            sh "docker-compose down"
+            cleanWs()
+        }
     }
 }
