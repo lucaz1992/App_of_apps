@@ -24,5 +24,11 @@ pipeline {
                 }
             }
         }
+
+        stage('Remove containers') {
+            steps {
+                sh "docker rm -f panda-front panda-back"
+            }
+        }
     }
 }
