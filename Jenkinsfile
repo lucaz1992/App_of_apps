@@ -78,9 +78,9 @@ pipeline {
                                  "BACKEND_IMAGE=$backendImage:$backendDockerTag"]) {
                             ansiblePlaybook inventory: 'inventory', playbook: 'playbook.yml'
                         }
-				}
-			}
-		}
+                }
+            }
+        }
     }
 
     post {
