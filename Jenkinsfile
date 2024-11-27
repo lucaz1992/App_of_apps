@@ -10,6 +10,10 @@ pipeline {
         PIP_BREAK_SYSTEM_PACKAGES = 1
     }
 
+    tools {
+        terraform 'Terraform'
+    }
+
     parameters {
         string(name: 'backendDockerTag', defaultValue: 'latest', description: 'Backend tag')
         string(name: 'frontendDockerTag', defaultValue: 'latest', description: 'Frontend tag')
