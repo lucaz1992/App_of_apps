@@ -62,7 +62,7 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/lucaz1992/Terraform'
                     withAWS(credentials:'AWS', region: 'us-east-1') {
                             sh 'terraform init -backend-config=bucket=luca-z-panda-devops-core-19'
-                            sh 'terraform apply -auto-approve -var bucket_name=panda-academy-panda-devops-core-19'
+                            sh 'terraform apply -auto-approve -var bucket_name=luca-z-panda-devops-core-19'
                             
                      } 
                  }
