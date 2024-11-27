@@ -1,6 +1,5 @@
 - name: Run whole application 
   hosts: all
-  connection: local
   become: true
 
   vars:
